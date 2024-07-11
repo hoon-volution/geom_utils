@@ -6,12 +6,10 @@ from shapely.affinity import scale, translate
 from .linestring_linestring import compute_linestrings_minkowski_sum
 from .linestring_polygon import compute_linestring_polygon_minkowski_sum
 from .polygon_polygon import compute_polygons_minkowski_sum
+from ..constant import DEFAULT_TOL
 
 
-DEFAULT_TOL = 0.0005
-
-
-def minkowski_sum(geom1: BaseGeometry, geom2: BaseGeometry, tol: float = DEFAULT_TOL,) -> BaseGeometry:
+def minkowski_sum(geom1: BaseGeometry, geom2: BaseGeometry, tol: float = DEFAULT_TOL) -> BaseGeometry:
     """
     computes minkowski sum of two geometries.
     tol is used as a parameters in a slight buffer when making patches, to prevent topological error.
@@ -23,10 +21,10 @@ def minkowski_sum(geom1: BaseGeometry, geom2: BaseGeometry, tol: float = DEFAULT
 
     # handle multipart geometries
     if isinstance(geom1, BaseMultipartGeometry):
-        return unary_union([minkowski_sum(subgeom, geom2) for subgeom in geom1.geoms])
+        return unary_union([minkowski_sum(subgeom, geom2, tol) for subgeom in geom1.geoms])
 
     if isinstance(geom2, BaseMultipartGeometry):
-        return unary_union([minkowski_sum(geom1, subgeom) for subgeom in geom2.geoms])
+        return unary_union([minkowski_sum(geom1, subgeom, tol) for subgeom in geom2.geoms])
 
     # type guard
     if not isinstance(geom1, (Point, LineString, Polygon)):

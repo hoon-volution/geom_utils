@@ -7,10 +7,10 @@ from shapely.geometry.base import BaseGeometry, BaseMultipartGeometry
 from .linestring_linestring import compute_linestrings_free_interior_space
 from .linestring_polygon import compute_linestring_polygon_free_interior_space
 from .polygon_polygon import compute_polygons_free_interior_space
-
+from ..constant import DEFAULT_TOL
 
 @lru_cache
-def get_free_interior_space(geom: BaseGeometry, domain: BaseGeometry) -> BaseGeometry:
+def get_free_interior_space(geom: BaseGeometry, domain: BaseGeometry, tol: float = DEFAULT_TOL) -> BaseGeometry:
     """
     returns the region {(x, y): geom + (x, y) is contained in domain}
     """
@@ -46,12 +46,12 @@ def get_free_interior_space(geom: BaseGeometry, domain: BaseGeometry) -> BaseGeo
     elif isinstance(geom, LineString):
         # 2-1. (LineString, LineString)
         if isinstance(domain, LineString):
-            return compute_linestrings_free_interior_space(geom, domain)
+            return compute_linestrings_free_interior_space(geom, domain, tol)
 
         # 2-2. (LineString, Polygon)
         else:
-            return compute_linestring_polygon_free_interior_space(geom, domain)
+            return compute_linestring_polygon_free_interior_space(geom, domain, tol)
 
     # 3. (Polygon, Polygon)
     else:
-        return compute_polygons_free_interior_space(geom, domain)
+        return compute_polygons_free_interior_space(geom, domain, tol)
