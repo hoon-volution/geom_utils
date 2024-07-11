@@ -10,6 +10,7 @@ Segment: TypeAlias = tuple[Point2D, Point2D]
 
 
 def compute_linestrings_minkowski_sum(ls1: LineString, ls2: LineString, tol: float) -> Polygon:
+
     edges1 = pairwise(ls1.coords)
     edges2 = pairwise(ls2.coords)
 

@@ -1,6 +1,7 @@
 from functools import lru_cache
 from .minkowski import minkowski_difference
 from .constant import DEFAULT_TOL
+
 from shapely import LineString, Polygon
 
 

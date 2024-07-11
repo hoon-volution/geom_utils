@@ -10,6 +10,7 @@ from ..constant import DEFAULT_TOL
 
 
 def minkowski_sum(geom1: BaseGeometry, geom2: BaseGeometry, tol: float = DEFAULT_TOL) -> BaseGeometry:
+
     """
     computes minkowski sum of two geometries.
     tol is used as a parameters in a slight buffer when making patches, to prevent topological error.
@@ -25,6 +26,7 @@ def minkowski_sum(geom1: BaseGeometry, geom2: BaseGeometry, tol: float = DEFAULT
 
     if isinstance(geom2, BaseMultipartGeometry):
         return unary_union([minkowski_sum(geom1, subgeom, tol) for subgeom in geom2.geoms])
+
 
     # type guard
     if not isinstance(geom1, (Point, LineString, Polygon)):
